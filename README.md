@@ -24,7 +24,7 @@ This repository contains lab codes for the 4th semester in the Design and Analys
 
 3. **Presorting and Element Uniqueness**  
    - **Technique:** Transform and Conquer  
-   - **Algorithm Used to sort:** Quick Sort  
+   - **Algorithm Used :** Quick Sort  
    
 
 4. **Horspool String Matching**  
