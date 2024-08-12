@@ -2,8 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define TABLE_SIZE 1000 
-
 int table[1000];
 
 void ShiftTableComputation(char p[]) {
