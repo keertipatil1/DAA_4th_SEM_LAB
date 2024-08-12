@@ -1,70 +1,88 @@
-#include <stdio.h>
 
-int count = 0;
-int stack[10];
-int output[10];
-int top = -1;
-int wow = 0;
+#include <stdio.h> 
+#include <time.h>
 
-void dfs(int a[10][10], int n, int visited[10], int current) {
-    int j;
-    stack[++top] = current;
-    visited[current] = 1;
+void swap(int* a, int* b) 
+{ 
+	int temp = *a; 
+	*a = *b; 
+	*b = temp; 
+} 
 
-    for (j = 0; j < n; j++) {
-        if (a[current][j] == 1 && visited[j] == 0) {
-            dfs(a, n, visited, j);
-        }
-    }
+int partition(int arr[], int low, int high) 
+{ 
+	int pivot = arr[low]; 
+	int i = low; 
+	int j = high; 
 
-    output[wow++] = current;
-    top--;
+	while (i < j) { 
+		while (arr[i] <= pivot && i <= high - 1) { 
+			i++; 
+		} 
+		while (arr[j] > pivot && j >= low + 1) { 
+			j--; 
+		} 
+		if (i < j) { 
+			swap(&arr[i], &arr[j]); 
+		} 
+	} 
+	swap(&arr[low], &arr[j]); 
+	return j; 
+} 
+
+void unique(int arr[], int n) {
+	for (int i = 0; i <= n - 2; i++) {
+		if (arr[i] == arr[i + 1]) {
+			printf("Not unique\n");
+			break;
+		} else if (i == n - 2 && arr[i] != arr[i + 1]) {
+			printf("Unique\n");
+		}
+	}
 }
 
-void DFS(int a[10][10], int n) {
-    int visited[10], comp = 0, i;
+void quickSort(int arr[], int low, int high) 
+{ 
+	if (low < high) { 
+		int partitionIndex = partition(arr, low, high); 
+		quickSort(arr, low, partitionIndex - 1); 
+		quickSort(arr, partitionIndex + 1, high); 
+	} 
+} 
 
-    for (i = 0; i < n; i++) {
-        visited[i] = 0;
-    }
-
-    printf("Pop order:\n");
-
-    for (i = 0; i < n; i++) {
-        if (visited[i] == 0) {
-            dfs(a, n, visited, i);
-            comp++;
-        }
-    }
-
-    if (comp > 1) {
-        printf("\nThe graph is disconnected \n");
-        printf("\nThe number of components are: %d\n", comp);
-    } else {
-        printf("\nGraph is connected.\n");
-    }
-}
-
-int main() {
-    int a[10][10], n, i, j;
-
-    printf("Enter the number of vertices: ");
+int main() 
+{ 
+    clock_t start, end;
+    double t;
+	int n, i;
+	
+	printf("Enter the number of elements: ");
     scanf("%d", &n);
 
-    printf("Enter the adjacency matrix:\n");
+    int arr[n];
+
+    printf("Enter %d elements:\n", n);
     for (i = 0; i < n; i++) {
-        for (j = 0; j < n; j++) {
-            scanf("%d", &a[i][j]);
-        }
+        scanf("%d", &arr[i]);
     }
 
-    DFS(a, n);
+	printf("Original array: "); 
+	for (int i = 0; i < n; i++) { 
+		printf("%d ", arr[i]); 
+	} 
 
-    printf("Topological sort: ");
-    while (wow > 0) {
-        printf("%d ", output[--wow]);
-    }
-    printf("\n");
+    start = clock();
+	quickSort(arr, 0, n - 1); 
+    end = clock();
 
-    return 0;
+	printf("\nSorted array: "); 
+	for (int i = 0; i < n; i++) { 
+		printf("%d ", arr[i]); 
+	} 
+	
+	unique(arr, n);
+    t = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("\nTime taken to sort: %f seconds\n", t);
+
+	return 0; 
 }
